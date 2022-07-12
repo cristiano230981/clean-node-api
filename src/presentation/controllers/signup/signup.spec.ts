@@ -23,7 +23,7 @@ const makeAddAccount = (): AddAccount => {
             const fakeAccount = {
                 id: 'valid_id',
                 name: 'valid_name',
-                email: 'valid_email@server.com',
+                email: 'valid_email@email.com',
                 password: 'valid_password'
             }
             return fakeAccount
@@ -225,8 +225,8 @@ describe('Signup Controller', () => {
         expect(httpResponse.body).toEqual({
             id: 'valid_id',
             name: 'valid_name',
-            email: 'valid_email@server.com',
-            password: 'valid_password',
+            email: 'valid_email@email.com',
+            password: 'valid_password'
         })
     })
 
