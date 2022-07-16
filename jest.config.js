@@ -4,5 +4,9 @@ module.exports = {
   coverageDirectory: "coverage",
   transform: {
    '.+\\.ts$' : 'ts-jest'
-  }
+  },
+  coveragePathIgnorePatterns: [
+    'index.ts',
+    'signup-protocols.ts'
+  ]
 };
