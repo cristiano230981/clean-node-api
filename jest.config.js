@@ -7,7 +7,6 @@ module.exports = {
   },
   coveragePathIgnorePatterns: [
     'index.ts',
-    'signup-protocols.ts',
-    'db-add-account-protocols.ts'
+    '-protocols.ts'
   ]
 };
