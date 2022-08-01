@@ -8,5 +8,6 @@ module.exports = {
   coveragePathIgnorePatterns: [
     'index.ts',
     '-protocols.ts'
-  ]
+  ],
+  preset: '@shelf/jest-mongodb'
 };
