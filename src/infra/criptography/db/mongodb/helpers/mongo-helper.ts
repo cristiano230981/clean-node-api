@@ -9,11 +9,11 @@ export const MongoHelper = {
         this.client = await MongoClient.connect(uri)
     },
     async disconnect () {
-        //await this.client.close()
+        await this.client?.close()
         this.client = null
     },
     async getCollection (name: string): Promise<Collection> {
-        if(!this.client == null){
+        if(this.client == null){
             await this.client.connect(this.uri)
         }
         return this.client.db().collection(name)
@@ -21,6 +21,5 @@ export const MongoHelper = {
     map: (collection: any): any => {
         const { _id, ...collectionWithoutId } = collection
         return { id: _id.toHexString(), ...collectionWithoutId }
-        //return Object.assign({}, collection, { id: id.insertedId.toHexString() })
     }
 }
