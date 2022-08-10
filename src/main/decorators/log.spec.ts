@@ -3,8 +3,6 @@ import { serverError } from "../../presentation/helpers/http-helper"
 import { Controller, HttpRequest, HttpResponse } from "../../presentation/protocols"
 import { LogControllerDecorator } from "./log"
 
-
-
 const makeLogErrorRepository = (): LogErrorRepository => {
     class LogErrorRepositoryStub implements LogErrorRepository {
        async log(stack: string): Promise<void> {
