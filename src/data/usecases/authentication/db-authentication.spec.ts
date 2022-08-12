@@ -2,6 +2,7 @@ import { resolve } from "path"
 import { AccountModel } from "../../../domain/models/account"
 import { AuthenticationModel } from "../../../domain/usecases/authentication"
 import { HashComparer } from "../../protocols/criptography/hash-compare"
+import { TokenGenerator } from "../../protocols/criptography/token-generator"
 import { LoadAccountByEmailRepository } from "../../protocols/db/load-account-by-email-repositopry"
 import { DbAuthentication } from "./db-authentication"
 
@@ -24,17 +25,20 @@ const makeFakeAuthentication = (): AuthenticationModel => (
 interface SutTypes {
     sut: DbAuthentication,
     loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository,
-    hashCompareStub: HashComparer
+    hashCompareStub: HashComparer,
+    tokenGeneratorStub: TokenGenerator
 }
 
 const makeSut = (): SutTypes => {
     const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
     const hashCompareStub = makeHashCompare()
-    const sut = new DbAuthentication(loadAccountByEmailRepositoryStub, hashCompareStub)
+    const tokenGeneratorStub = makeTokenGenerator()
+    const sut = new DbAuthentication(loadAccountByEmailRepositoryStub, hashCompareStub, tokenGeneratorStub)
     return {
         sut,
         loadAccountByEmailRepositoryStub,
-        hashCompareStub
+        hashCompareStub,
+        tokenGeneratorStub
     }
 }
 
@@ -54,6 +58,15 @@ const makeHashCompare = (): HashComparer => {
         }
     }
     return new HashCompareStub()
+}
+
+const makeTokenGenerator = (): TokenGenerator => {
+    class TokenGenerateStub implements TokenGenerator {
+        async generate(id: string): Promise<string> {
+            return new Promise(resolve => resolve('any_token'))
+        }
+    }
+    return new TokenGenerateStub()
 }
 
 describe('DbAuthentication UseCase', () => {
@@ -92,11 +105,17 @@ describe('DbAuthentication UseCase', () => {
         await expect(promise).rejects.toThrow()
     })
 
-    
     test('Should return null if HashCompare returns false', async () => {
         const { sut, hashCompareStub } = makeSut()
         jest.spyOn(hashCompareStub, 'compare').mockReturnValueOnce(new Promise(resolve => resolve(false)))
         const accessToken = await sut.auth(makeFakeAuthentication())
         expect(accessToken).toBeNull()
+    })
+
+    test('Should call TokenGenerator with correct id', async () => {
+        const { sut, tokenGeneratorStub } = makeSut()
+        const generateSpy = jest.spyOn(tokenGeneratorStub, 'generate')
+        await sut.auth(makeFakeAuthentication())
+        expect(generateSpy).toHaveBeenCalledWith('any_id')
     })
 })
