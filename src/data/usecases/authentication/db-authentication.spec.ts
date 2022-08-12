@@ -1,11 +1,10 @@
-import { resolve } from "path"
-import { AccountModel } from "../../../domain/models/account"
-import { AuthenticationModel } from "../../../domain/usecases/authentication"
-import { HashComparer } from "../../protocols/criptography/hash-compare"
-import { TokenGenerator } from "../../protocols/criptography/token-generator"
-import { LoadAccountByEmailRepository } from "../../protocols/db/load-account-by-email-repositopry"
-import { UpdateAccessTokenRepository } from "../../protocols/db/update-access-token-repository"
 import { DbAuthentication } from "./db-authentication"
+import { AuthenticationModel,
+    LoadAccountByEmailRepository,
+    HashComparer,
+    TokenGenerator,
+    UpdateAccessTokenRepository,
+    AccountModel } from "../add-account/db-add-account-protocols"
 
 const makeFakeAccount = (): AccountModel => (
     {
