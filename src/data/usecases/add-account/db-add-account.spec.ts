@@ -1,7 +1,7 @@
 import { AccountModel } from "./db-add-account-protocols"
 import { DbAddAccount } from "./db-add-account"
 import { Hasher } from "../../protocols/criptography/hasher"
-import { AddAccountRepository } from "../../protocols/db/add-account-repository"
+import { AddAccountRepository } from "../../protocols/db/account/add-account-repository"
 import { AddAccountModel } from "../../../domain/usecases/add-account"
 
 interface sutTypes {
