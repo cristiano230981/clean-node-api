@@ -12,7 +12,7 @@ interface SubTypes {
 
 const makeAddAccount = (): AddAccount => {
     class AddAccountStub implements AddAccount {
-        async add (account: AddAccountModel): Promise<AccountModel> {
+        async add (account: AddAccountModel): Promise<AccountModel | null> {
             return  new Promise(resolve => resolve(makeFakeAccount()))
         }
     }
@@ -91,9 +91,8 @@ describe('Signup Controller', () => {
 
     test('Should return 403 if AddAccount returns null', async () => {
         const { sut, addAccountStub } = makeSut()
-        jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(null)))
+        jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(new Promise(resolve => resolve(null)))
         const httpResponse = await sut.handle(makeFakeRequest())
-        //console.log(httpResponse.body)
         expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
     })
 
