@@ -1,5 +1,5 @@
 import { EmailInUseError, MissingParamError, ServerError } from "../../errors"
-import {  AddAccount, AddAccountModel, AccountModel, HttpRequest, Validation, Authentication, AuthenticationModel } from "./signup-controller-protocols"
+import { AddAccount, AddAccountModel, AccountModel, HttpRequest, Validation, Authentication, AuthenticationModel } from "./signup-controller-protocols"
 import { SignupController } from "./signup-controller"
 import { badRequest, forbidden, ok, serverError } from "../../helpers/http/http-helper"
 
@@ -93,6 +93,7 @@ describe('Signup Controller', () => {
         const { sut, addAccountStub } = makeSut()
         jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(null)))
         const httpResponse = await sut.handle(makeFakeRequest())
+        //console.log(httpResponse.body)
         expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
     })
 
