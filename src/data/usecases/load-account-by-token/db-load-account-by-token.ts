@@ -14,7 +14,6 @@ export class DbLoadAccountByToken implements LoadAccountByToken {
                 return account
             }
         }
-
         return null
     }
 }
